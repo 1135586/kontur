@@ -97,26 +97,20 @@ public:
         delete[] adjacency_matrix, children;
     }
 };
-int getChildrenFromFile(string fileName, Child* children){
-    ifstream file (fileName, ios::in | ios::binary | ios::ate);
+void getChildrenFromFile(string fileName, Child* children, int numberOfChildren){
+    ifstream file (fileName, ios::in | ios::binary);
     if (file.is_open())
     {
-        int numberOfChildren = (int)file.tellg() / sizeof(Child);
-        file.seekg (0, ios::beg);
         file.read((char*)children, numberOfChildren * sizeof(Child));
         file.close();
-        return numberOfChildren;
     }
 }
-int getSympathiesFromFile(string fileName, Sympathy* sympathies){
-    ifstream file (fileName, ios::in | ios::binary |ios::ate);
+void getSympathiesFromFile(string fileName, Sympathy* sympathies, int amountOfSympathies){
+    ifstream file (fileName, ios::in | ios::binary);
     if (file.is_open())
     {
-        int amountOfSympathies = (int)file.tellg() / sizeof(Sympathy);
-        file.seekg (0, ios::beg);
         file.read((char*)sympathies, amountOfSympathies * sizeof(Sympathy));
         file.close();
-        return amountOfSympathies;
     }
 }
 void createFiles(string childrenFileName, string sympathiesFileName){
@@ -188,8 +182,8 @@ int main (int argc , char *argv[]){
 
     children = new Child[numberOfChildren];
     sympathies = new Sympathy[amountOfSympathies];
-    getChildrenFromFile(childrenFileName, children);
-    getSympathiesFromFile(sympathiesFileName, sympathies);
+    getChildrenFromFile(childrenFileName, children, numberOfChildren);
+    getSympathiesFromFile(sympathiesFileName, sympathies, amountOfSympathies);
 
     Relationship relationship(numberOfChildren, amountOfSympathies, children, sympathies);
 
